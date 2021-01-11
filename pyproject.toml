@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "dash"
+version = "0.1.0"
+description = ""
+authors = ["Adam Smith"]
+
+[tool.poetry.scripts]
+main = 'dash.main:main'
+shell = 'dash.shell:main'
+
+[tool.poetry.dependencies]
+python = "^3.7"
+Pillow = "^8.1.0"
+numpy = "^1.19.5"
+spidev = "^3.5"
+"RPi.GPIO" = "^0.7.0"
+ipython = "^7.19.0"
+requests = "^2.25.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

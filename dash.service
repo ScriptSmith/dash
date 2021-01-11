@@ -1,0 +1,16 @@
+[Unit]
+Description=ePaper dashboard
+StartLimitBurst=5
+StartLimitIntervalSec=30
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=10
+User=adam
+WorkingDirectory=/home/adam/src/waveshare/dash
+EnvironmentFile=/home/adam/src/waveshare/dash/.env
+ExecStart=/home/adam/.local/bin/poetry run main
+
+[Install]
+WantedBy=multi-user.target,graphical.target

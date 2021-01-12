@@ -222,9 +222,12 @@ def main():
     try:
         while True:
             current_time = datetime.now()
-            for t, screens in times:
-                if current_time.hour <= t:
+
+            screens = None
+            for t, t_screens in times:
+                if current_time.hour < t:
                     break
+                screens = t_screens
 
             screen = choice(screens)(epd)
             screen.loop()

@@ -141,7 +141,11 @@ class JiraScreen(Screen):
         self.image.paste(self.logo, (0, self.MENU_OFFSET + 10))
 
     def draw_canvas(self):
-        my_issues = list(filter(lambda x: x['fields']['assignee'] == self.jira_username, self.stats['issues']))
+        my_issues = []
+        for issue in self.stats['issues']:
+            if issue['fields'].get('assignee'):
+                if issue['fields']['assignee']['emailAddress'] == self.jira_username:
+                    my_issues.append(issue)
         in_progress = list(filter(lambda x: x['fields']['status']['name'] == "In Progress", my_issues))
         lines = [
             "",

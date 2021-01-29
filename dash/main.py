@@ -198,15 +198,15 @@ class CapScreen(Screen):
         self.image.paste(self.logo, (0, self.MENU_OFFSET + 10))
 
     def draw_canvas(self):
-        self.draw.text((self.CANVAS_OFFSET, self.MENU_OFFSET + 30), self.MESSAGE, font=self.menu_font, fill=0)
+        self.draw.multiline_text((self.CANVAS_OFFSET, self.MENU_OFFSET + 30), choice(self.MESSAGES), font=self.menu_font, fill=0)
 
 class GoodMorningScreen(CapScreen):
     LOGO_PATH = "icons/sun.png"
-    MESSAGE = "Good Morning!"
+    MESSAGES = ["Good Morning!", "sup", "Hello", "G'day", "Well, well, well\nLook who it is...", "How'sit hangin?", "Ello, gov'na" "How farest \nthou?"]
 
 class GoodNightScreen(CapScreen):
     LOGO_PATH = "icons/moon.png"
-    MESSAGE = "Good Night!"
+    MESSAGES = ["Good Night!", "cya", "Have a good one!", "l8r sk8r", "'Til we meet again", "Farewell", "À bientôt", "Keep the change\nYa filthy animal"]
 
 def main():
     epd = start_epd()

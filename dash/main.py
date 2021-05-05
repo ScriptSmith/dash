@@ -19,6 +19,7 @@ import requests
 class Screen(ABC):
     MENU_OFFSET = 22
     CANVAS_OFFSET = 110
+    LOOP_TIME = 60
 
     def __init__(self, epd, full_update=True):
         self.epd = epd
@@ -44,13 +45,13 @@ class Screen(ABC):
 
         if self.full_update:
             self.epd.display(self.epd.getbuffer(self.image))
-            sleep(60 - datetime.now().second)
+            sleep(self.LOOP_TIME - datetime.now().second)
 
         else:
             self.epd.displayPartBaseImage(self.epd.getbuffer(self.image))
             self.epd.init(self.epd.PART_UPDATE)
 
-            for _ in range(60):
+            for _ in range(self.LOOP_TIME):
                 start_time = datetime.now()
 
                 self.draw.rectangle(menu_rect, fill=0xFF)

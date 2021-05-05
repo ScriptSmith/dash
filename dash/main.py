@@ -6,6 +6,7 @@ from io import BytesIO
 from itertools import cycle
 from os import path, environ
 from random import choice
+import socket
 from time import sleep
 
 from .waveshare_epd import epd2in13_V2
@@ -187,6 +188,24 @@ class FerryScreen(Screen):
 
         self.draw.multiline_text((self.CANVAS_OFFSET, self.MENU_OFFSET), "\n".join(timetable[:5]), font=self.canvas_font, fill=0)
 
+class IpScreen(Screen):
+    def __init__(self, *args, **kwargs):
+        self.font = ImageFont.truetype(path.join(FONT_PATH, "arial.ttf"), 30)
+
+        super().__init__(*args, **kwargs)
+
+    def get_logo(self):
+        pass
+
+    def draw_logo(self):
+        pass
+
+    def draw_canvas(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 1))
+        local_ip_addr = s.getsockname()[0]
+        self.draw.multiline_text((0, self.MENU_OFFSET), local_ip_addr, font=self.font, fill=0)
+
 class CapScreen(Screen):
     LOGO_PATH = None
     MESSAGE = None
@@ -210,6 +229,9 @@ class GoodNightScreen(CapScreen):
 
 def main():
     epd = start_epd()
+
+    IpScreen(epd).loop()
+
     times = [
         (0, [GoodNightScreen]),
         (4, [GoodMorningScreen]),

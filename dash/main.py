@@ -222,7 +222,7 @@ class CapScreen(Screen):
 
 class GoodMorningScreen(CapScreen):
     LOGO_PATH = "icons/sun.png"
-    MESSAGES = ["Good Morning!", "sup", "Hello", "G'day", "Well, well, well\nLook who it is...", "How'sit hangin?", "Ello, gov'na" "How farest \nthou?"]
+    MESSAGES = ["Good Morning!", "sup", "Hello", "G'day", "Well, well, well\nLook who it is...", "How'sit hangin?", "Ello, gov'na", "How farest \nthou?"]
 
 class GoodNightScreen(CapScreen):
     LOGO_PATH = "icons/moon.png"

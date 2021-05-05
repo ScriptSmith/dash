@@ -15,6 +15,8 @@ from .utils import start_epd, stop_epd, create_image, draw_time, get_text_dimens
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 import requests
 
+FLIP_SCREEN = environ.get("FLIP_SCREEN")
+
 
 class Screen(ABC):
     MENU_OFFSET = 22
@@ -43,12 +45,14 @@ class Screen(ABC):
 
         self.epd.init(self.epd.FULL_UPDATE)
 
+        image = ImageOps.mirror(ImageOps.flip(self.image)) if FLIP_SCREEN else self.image
+
         if self.full_update:
-            self.epd.display(self.epd.getbuffer(self.image))
+            self.epd.display(self.epd.getbuffer(image))
             sleep(self.LOOP_TIME - datetime.now().second)
 
         else:
-            self.epd.displayPartBaseImage(self.epd.getbuffer(self.image))
+            self.epd.displayPartBaseImage(self.epd.getbuffer(image))
             self.epd.init(self.epd.PART_UPDATE)
 
             for _ in range(self.LOOP_TIME):
@@ -56,7 +60,7 @@ class Screen(ABC):
 
                 self.draw.rectangle(menu_rect, fill=0xFF)
                 menu_rect = self.draw_menu()
-                self.epd.displayPartial(self.epd.getbuffer(self.image))
+                self.epd.displayPartial(self.epd.getbuffer(image))
 
                 sleep(1 - (datetime.now() - start_time).total_seconds())
 

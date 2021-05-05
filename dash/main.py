@@ -68,15 +68,6 @@ class Screen(ABC):
     def clear_image(self):
         self.draw.rectangle((0, 0, self.epd.height, self.epd.width), fill=0xFF)
 
-    def display_epd(self):
-        image_buffer = self.epd.getbuffer(self.image)
-        self.epd.display(image_buffer) if self.full_update else self.epd.displayPartial(image_buffer)
-
-    def draw_components(self):
-
-        self.draw_menu()
-        self.display_epd()
-
     def draw_menu(self):
         clock = "%H:%M" if self.full_update else "%H:%M:%S"
         time_text = datetime.now().strftime(f"{clock} %a %d %b, %Y")

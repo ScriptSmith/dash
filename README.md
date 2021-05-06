@@ -2,6 +2,8 @@
 
 Simple 2.13 inch ePaper dashboard
 
+![Raspberry Pi with ePaper display running dash](photo.jpg)
+
 ## Screens
 
 - Good Morning / Evening

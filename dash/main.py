@@ -129,7 +129,7 @@ class JiraScreen(Screen):
         super().__init__(*args, **kwargs)
 
     def get_logo(self):
-        return Image.open(BytesIO(requests.get(self.LOGO_URL).content)).convert("1", dither=0, colors=1).resize((80, 80))
+        return Image.open('icons/jira.png')
 
     def get_stats(self):
         return requests.get(f"https://{self.jira_group}.atlassian.net/rest/api/2/search?jql={self.jira_query}", auth=(self.jira_username, self.jira_password)).json()

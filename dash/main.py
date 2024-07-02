@@ -31,6 +31,7 @@ class Screen(ABC):
         self.draw = ImageDraw.Draw(self.image)
         self.menu_font = ImageFont.truetype(path.join(FONT_PATH, "arial.ttf"), 20)
         self.canvas_font = ImageFont.truetype(path.join(FONT_PATH, "arial.ttf"), 14)
+        self.mono_font = ImageFont.truetype(path.join(FONT_PATH, "cour.ttf"), 16)
 
         self.logo = self.get_logo()
 
@@ -184,6 +185,37 @@ class FerryScreen(Screen):
 
         self.draw.multiline_text((self.CANVAS_OFFSET, self.MENU_OFFSET), "\n".join(timetable[:5]), font=self.canvas_font, fill=0)
 
+
+class CycleScreen(Screen):
+    def __init__(self, *args, **kwargs):
+        self.data_url = environ.get("BOM_WEATHER_URL")
+        print(self.data_url)
+
+        super().__init__(*args, **kwargs)
+
+    def get_logo(self):
+        return Image.open('icons/cycle.png')
+
+    def get_stats(self):
+        return requests.get(self.data_url, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/110.0'}).json()
+
+    def draw_logo(self):
+        self.image.paste(self.logo, (0, self.MENU_OFFSET + 10))
+
+    def draw_canvas(self):
+        self.get_stats()
+        last_observation = self.stats['observations']['data'][0]
+        lines = [
+            f"Temp: {last_observation['air_temp']}°C",
+            f"Hum:  {last_observation['rel_hum']}%",
+            f"Wind: {last_observation['wind_spd_kmh']}kph",
+            f"Gust: {last_observation['gust_kmh']}kph",
+            f"Dir:  {last_observation['wind_dir']}",
+        ]
+
+        self.draw.multiline_text((self.CANVAS_OFFSET, self.MENU_OFFSET), "\n".join(lines), font=self.mono_font, fill=0)
+
+
 class IpScreen(Screen):
     def __init__(self, *args, **kwargs):
         self.font = ImageFont.truetype(path.join(FONT_PATH, "arial.ttf"), 30)
@@ -233,7 +265,7 @@ def main():
         (4, [GoodMorningScreen]),
         (9, [JiraScreen]),
         (10, [JiraScreen, GithubScreen]),
-        (15, [FerryScreen]),
+        (15, [CycleScreen]),
         (20, [GoodNightScreen]),
     ]
 
